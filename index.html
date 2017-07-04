@@ -26,7 +26,7 @@
 <div class="lg-sd-circle">
 		<script>
 
-			var SCREEN_WIDTH = window.innerWidth,
+					var SCREEN_WIDTH = window.innerWidth,
 			SCREEN_HEIGHT = window.innerHeight,
 
 			mouseX = 0, mouseY = 0,
@@ -39,7 +39,8 @@
 			AMOUNTY = 10,
 
 			camera, scene, renderer;
-
+			var group = new THREE.Group();
+      var rotationSpeed = 0.001;
 			init();
 			animate();
 
@@ -80,6 +81,8 @@
 
 				} );
 
+
+
 				for ( var i = 0; i < 1000; i ++ ) {
 
 					particle = new THREE.Sprite( material );
@@ -89,9 +92,11 @@
 					particle.position.normalize();
 					particle.position.multiplyScalar( Math.random() * 10 + 450 );
 					particle.scale.multiplyScalar( 2 );
-					scene.add( particle );
+          group.add(particle);
+					
 
 				}
+        scene.add( group );
 
 				// lines
 
@@ -111,7 +116,8 @@
 					geometry.vertices.push( vertex2 );
 
 					var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0xffffff, opacity: Math.random() } ) );
-					scene.add( line );
+          group.add(line);
+
 				}
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -180,11 +186,14 @@
 
 			}
 
+
 			function render() {
 
 				camera.position.x += ( mouseX - camera.position.x ) * .05;
 				camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
 				camera.lookAt( scene.position );
+        
+        group.rotateY(rotationSpeed);
 
 				renderer.render( scene, camera );
 
